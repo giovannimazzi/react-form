@@ -1,10 +1,8 @@
 import { useState } from "react";
-import articles from "./data/articles";
+import AddForm from "./components/AddForm";
+import ArticleCard from "./components/ArticleCard";
 
-import { BsGeoAltFill } from "react-icons/bs";
-import { IoMdAddCircle } from "react-icons/io";
-import { IoTrash } from "react-icons/io5";
-import { GrEdit } from "react-icons/gr";
+import articles from "./data/articles";
 
 export default function App() {
   const [articlesList, setArticlesList] = useState(articles);
@@ -34,7 +32,6 @@ export default function App() {
     if (articleToAdd.title === "") return;
     setArticlesList([articleToAdd, ...articlesList]);
     setNewArticle({ ...newArticle, title: "" });
-    console.log(articleToAdd.id);
   };
 
   const handleEditArticle = (id) => {
@@ -44,6 +41,15 @@ export default function App() {
     } else {
       setOnEditList([...onEditList, id]);
     }
+  };
+
+  const handleEditTitle = (e, id) => {
+    const articlesListAlias = structuredClone(articlesList);
+    const currentArticle = articlesListAlias.find(
+      (article) => article.id === id,
+    );
+    currentArticle.title = e.target.value;
+    setArticlesList(articlesListAlias);
   };
 
   const handleDeleteArticle = (id) => {
@@ -60,99 +66,27 @@ export default function App() {
       </header>
       <main>
         <div className="container py-4">
-          {articlesList.map(({ id, title }) => {
+          {articlesList.map((article) => {
             return (
-              <div
-                key={id}
-                className="card my-4 bg-transparent border-0 rounded-5"
-              >
-                <div className="card-body d-flex justify-content-between align-items-center">
-                  <div className="card-title">
-                    <h2>
-                      <a href="#" className="text-decoration-none">
-                        <BsGeoAltFill className="me-2 trip-icon" />
-                        <span className="text-dark">{title}</span>
-                      </a>
-                    </h2>
-                    <div
-                      className={`d-flex align-items-center ${onEditList.includes(id) ? "" : "d-none"}`}
-                    >
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={title}
-                        onChange={(e) => {
-                          const articlesListAlias =
-                            structuredClone(articlesList);
-                          const currentArticle = articlesListAlias.find(
-                            (article) => article.id === id,
-                          );
-                          currentArticle.title = e.target.value;
-                          setArticlesList(articlesListAlias);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="option d-flex flex-column gap-1">
-                    <button
-                      className="btn btn-secondary d-flex align-item-center gap-1"
-                      onClick={() => handleEditArticle(id)}
-                    >
-                      <GrEdit className="fs-5" />
-                      <small>Edit</small>
-                    </button>
-                    <button
-                      className="btn btn-danger d-flex align-item-center gap-1"
-                      onClick={() => handleDeleteArticle(id)}
-                    >
-                      <IoTrash className="fs-5" />
-                      <small>Delete</small>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ArticleCard
+                key={article.id}
+                article={article}
+                isOnEdit={onEditList.includes(article.id)}
+                onChangeFnc={(e) => handleEditTitle(e, article.id)}
+                OnClickEditFnc={handleEditArticle}
+                onClickDeleteFnc={handleDeleteArticle}
+              />
             );
           })}
         </div>
       </main>
       <footer>
         <div className="container">
-          <div className="card my-4 rounded-5 text-center text-light utility tool">
-            <div className="card-body">
-              <div className="card-title mb-4">
-                <h2>📰Nuovo Articolo📰</h2>
-              </div>
-              <div className="card-text">
-                <form
-                  onSubmit={(e) => {
-                    handleAddNewArticle(e);
-                  }}
-                >
-                  <div className="mb-3">
-                    <label
-                      htmlFor="FormControlInput1"
-                      className="form-label h5"
-                    >
-                      Titolo
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="FormControlInput1"
-                      placeholder="Il mio Viaggio a ..."
-                      value={newArticle.title}
-                      onChange={(e) => {
-                        handleNewArticleChanges(e);
-                      }}
-                    />
-                    <button className="btn btn-primary fs-5 d-flex align-items-center gap-2 mx-auto mt-4">
-                      <IoMdAddCircle /> <span>AGGIUNGI ARTICOLO</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+          <AddForm
+            onSubmitFnc={handleAddNewArticle}
+            observableValue={newArticle.title}
+            onChangeFnc={handleNewArticleChanges}
+          />
         </div>
       </footer>
     </div>
