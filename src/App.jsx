@@ -13,6 +13,7 @@ export default function App() {
     title: "",
     descprition: "",
   });
+  const [onEditList, setOnEditList] = useState([]);
 
   const handleNewArticleChanges = (e) =>
     setNewArticle({
@@ -34,6 +35,15 @@ export default function App() {
     setArticlesList([articleToAdd, ...articlesList]);
     setNewArticle({ ...newArticle, title: "" });
     console.log(articleToAdd.id);
+  };
+
+  const handleEditArticle = (id) => {
+    if (onEditList.includes(id)) {
+      const newOnEditList = onEditList.filter((currentId) => currentId !== id);
+      setOnEditList(newOnEditList);
+    } else {
+      setOnEditList([...onEditList, id]);
+    }
   };
 
   const handleDeleteArticle = (id) => {
@@ -64,9 +74,30 @@ export default function App() {
                         <span className="text-dark">{title}</span>
                       </a>
                     </h2>
+                    <div
+                      className={`d-flex align-items-center ${onEditList.includes(id) ? "" : "d-none"}`}
+                    >
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={title}
+                        onChange={(e) => {
+                          const articlesListAlias =
+                            structuredClone(articlesList);
+                          const currentArticle = articlesListAlias.find(
+                            (article) => article.id === id,
+                          );
+                          currentArticle.title = e.target.value;
+                          setArticlesList(articlesListAlias);
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="option d-flex flex-column gap-1">
-                    <button className="btn btn-secondary d-flex align-item-center gap-1">
+                    <button
+                      className="btn btn-secondary d-flex align-item-center gap-1"
+                      onClick={() => handleEditArticle(id)}
+                    >
                       <GrEdit className="fs-5" />
                       <small>Edit</small>
                     </button>
