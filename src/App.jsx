@@ -33,10 +33,12 @@ export default function App() {
     if (articleToAdd.title === "") return;
     setArticlesList([articleToAdd, ...articlesList]);
     setNewArticle({ ...newArticle, title: "" });
+    console.log(articleToAdd.id);
   };
 
   const handleDeleteArticle = (id) => {
-    console.log(id);
+    const newArticlesList = articlesList.filter((article) => article.id !== id);
+    setArticlesList(newArticlesList);
   };
 
   return (
