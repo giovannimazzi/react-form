@@ -3,6 +3,8 @@ import articles from "./data/articles";
 
 import { BsGeoAltFill } from "react-icons/bs";
 import { IoMdAddCircle } from "react-icons/io";
+import { IoTrash } from "react-icons/io5";
+import { GrEdit } from "react-icons/gr";
 
 export default function App() {
   const [articlesList, setArticlesList] = useState(articles);
@@ -28,8 +30,13 @@ export default function App() {
       ...newArticle,
       id: currentMaxId + 1,
     };
+    if (articleToAdd.title === "") return;
     setArticlesList([articleToAdd, ...articlesList]);
     setNewArticle({ ...newArticle, title: "" });
+  };
+
+  const handleDeleteArticle = (id) => {
+    console.log(id);
   };
 
   return (
@@ -43,8 +50,11 @@ export default function App() {
         <div className="container py-4">
           {articlesList.map(({ id, title }) => {
             return (
-              <div key={id} className="card my-4 bg-transparent rounded-5">
-                <div className="card-body">
+              <div
+                key={id}
+                className="card my-4 bg-transparent border-0 rounded-5"
+              >
+                <div className="card-body d-flex justify-content-between align-items-center">
                   <div className="card-title">
                     <h2>
                       <a href="#" className="text-decoration-none">
@@ -52,6 +62,19 @@ export default function App() {
                         <span className="text-dark">{title}</span>
                       </a>
                     </h2>
+                  </div>
+                  <div className="option d-flex flex-column gap-1">
+                    <button className="btn btn-secondary d-flex align-item-center gap-1">
+                      <GrEdit className="fs-5" />
+                      <small>Edit</small>
+                    </button>
+                    <button
+                      className="btn btn-danger d-flex align-item-center gap-1"
+                      onClick={() => handleDeleteArticle(id)}
+                    >
+                      <IoTrash className="fs-5" />
+                      <small>Delete</small>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -61,7 +84,6 @@ export default function App() {
       </main>
       <footer>
         <div className="container">
-          <hr />
           <div className="card my-4 rounded-5 text-center text-light utility tool">
             <div className="card-body">
               <div className="card-title mb-4">
