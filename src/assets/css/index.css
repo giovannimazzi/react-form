@@ -5,9 +5,16 @@
   margin: 5px;
 }
 
-/* * {
+.app-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.utility * {
   font-family: "Inter", sans-serif;
-} */
+}
 
 h1,
 h2,
@@ -31,10 +38,20 @@ header {
   color: whitesmoke;
 }
 
+main {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
 a:hover span {
   color: coral !important;
 }
 
 .trip-icon {
   color: coral;
+}
+
+.tool {
+  background-color: coral;
 }
