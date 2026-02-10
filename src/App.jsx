@@ -29,6 +29,7 @@ export default function App() {
       id: currentMaxId + 1,
     };
     setArticlesList([articleToAdd, ...articlesList]);
+    setNewArticle({ ...newArticle, title: "" });
   };
 
   return (
