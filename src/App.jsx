@@ -55,6 +55,10 @@ export default function App() {
   const handleDeleteArticle = (id) => {
     const newArticlesList = articlesList.filter((article) => article.id !== id);
     setArticlesList(newArticlesList);
+    if (onEditList.includes(id)) {
+      const newOnEditList = onEditList.filter((currentId) => currentId !== id);
+      setOnEditList(newOnEditList);
+    }
   };
 
   return (
