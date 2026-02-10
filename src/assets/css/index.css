@@ -44,12 +44,9 @@ main {
   min-height: 0;
 }
 
-a:hover span {
-  color: coral !important;
-}
-
+a:hover span,
 .trip-icon {
-  color: coral;
+  color: coral !important;
 }
 
 .tool {
