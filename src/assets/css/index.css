@@ -17,3 +17,24 @@ h5,
 h6 {
   font-family: "Playfair Display", serif;
 }
+
+h1 {
+  font-size: 3rem;
+}
+
+body {
+  background-color: lightyellow;
+}
+
+header {
+  background-color: coral;
+  color: whitesmoke;
+}
+
+a:hover span {
+  color: coral !important;
+}
+
+.trip-icon {
+  color: coral;
+}
